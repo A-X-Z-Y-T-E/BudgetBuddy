@@ -1,0 +1,9 @@
+pathway
+fetchai
+flask
+requests
+plotly
+uagents 
+langchain
+python-dotenv
+pandas

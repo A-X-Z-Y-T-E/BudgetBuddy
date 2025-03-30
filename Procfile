@@ -1,0 +1,1 @@
+web: streamlit run fin_track.py 

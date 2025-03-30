@@ -30,13 +30,30 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Load environment variables
+# Handle both local .env and Streamlit Cloud secrets
+# Load environment variables from .env file (local development)
 load_dotenv()
 
+# Function to get API keys from either .env file or Streamlit secrets
+def get_api_key(key_name):
+    # First try to get from Streamlit secrets
+    if hasattr(st, 'secrets') and 'api_keys' in st.secrets:
+        api_key = st.secrets.api_keys.get(key_name)
+        if api_key:
+            return api_key
+    
+    # Fall back to environment variables
+    return os.getenv(key_name)
+
 # Set API keys
-os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
-os.environ["COHERE_API_KEY"] = os.getenv("COHERE_API_KEY")
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["GROQ_API_KEY"] = get_api_key("GROQ_API_KEY")
+os.environ["COHERE_API_KEY"] = get_api_key("COHERE_API_KEY")
+os.environ["OPENAI_API_KEY"] = get_api_key("OPENAI_API_KEY")
+
+# Check if required API keys are available
+if not os.environ.get("GROQ_API_KEY") or not os.environ.get("COHERE_API_KEY"):
+    st.error("⚠️ Required API keys are missing. Please set the GROQ_API_KEY and COHERE_API_KEY in your environment or Streamlit secrets.")
+    st.stop()
 
 nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
@@ -54,7 +71,7 @@ model = ChatGroq(
 def get_embeddings():
     return CohereEmbeddings(
         model="embed-english-v3.0",
-        cohere_api_key=os.getenv("COHERE_API_KEY"),
+        cohere_api_key=get_api_key("COHERE_API_KEY"),
         user_agent="finance-tracker-app",
         request_timeout=60
     )

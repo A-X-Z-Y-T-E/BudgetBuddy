@@ -4,6 +4,12 @@
 # Streamlit secrets
 .streamlit/secrets.toml
 
+# Specific project files to ignore
+DEPLOYMENT.md
+fin_agent.py
+Procfile
+test.ipynb
+
 # Python artifacts
 __pycache__/
 *.py[cod]
@@ -49,3 +55,4 @@ Thumbs.db
 
 # Logs
 *.log 
+DEPLOYMENT.md

@@ -78,7 +78,3 @@ BudgetBuddy is an intelligent financial tracking application that helps you anal
 - `transactions_with_types.csv`: Sample transaction data
 - `requirements.txt`: Project dependencies
 - `.env`: Environment variables (not included in repo)
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details. 
